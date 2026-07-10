@@ -9,8 +9,6 @@ export default function BottomNav() {
   const longPressTimer = useRef(null)
   const pressStart = useRef(null)
 
-  const active = path => pathname.startsWith(path) ? 'nav-item active' : 'nav-item'
-
   const LONG_PRESS_DURATION = 1500
 
   const handlePressStart = useCallback(() => {
@@ -43,17 +41,17 @@ export default function BottomNav() {
     <>
       <nav className="bottom-nav">
         <div className="nav-container">
-          <Link to="/home" className={active('/home')}>
+          <Link to="/home" className={`nav-item${pathname.startsWith('/home')?' active':''}`}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
             <span>Accueil</span>
           </Link>
-          <Link to="/activite" className={active('/activite')}>
+          <Link to="/activite" className={`nav-item${pathname.startsWith('/activite')?' active':''}`}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             <span>Activite</span>
           </Link>
           <button
-            className="nav-item"
-            style={{ background: 'none', border: 'none', position: 'relative' }}
+            className={`nav-item${longPressProgress?' active':''}`}
+            style={{ position: 'relative', flexShrink: 0 }}
             onMouseDown={handlePressStart}
             onMouseUp={handlePressEnd}
             onMouseLeave={handlePressCancel}
@@ -82,11 +80,11 @@ export default function BottomNav() {
               {longPressProgress ? 'Maintenez...' : 'Alerte'}
             </span>
           </button>
-          <Link to="/prediction" className={active('/prediction')}>
+          <Link to="/prediction" className={`nav-item${pathname.startsWith('/prediction')?' active':''}`}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             <span>Prediction</span>
           </Link>
-          <Link to="/profil" className={active('/profil')}>
+          <Link to="/profil" className={`nav-item${pathname.startsWith('/profil')?' active':''}`}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span>Profil</span>
           </Link>
