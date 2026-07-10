@@ -93,7 +93,9 @@ export default function Home() {
   const [lastBPM, setLastBPM] = useState(
     () => localStorage.getItem('cardiLastBPM') || '--'
   )
-  const [userName, setUserName] = useState('Utilisateur')
+  const session = JSON.parse(localStorage.getItem('cardi_session') || '{}')
+  const [userName, setUserName] = useState(session?.user?.fullName || 'Utilisateur')
+  const [profilePic, setProfilePic] = useState(() => localStorage.getItem('cardiProfilePic') || '')
   const [bpmValues, setBpmValues] = useState([])
   const [waveformData, setWaveformData] = useState([])
   const [showHistory, setShowHistory] = useState(false)
@@ -395,23 +397,19 @@ export default function Home() {
             style={{
               width: 56,
               height: 56,
-              background: 'linear-gradient(135deg,#ff6b9d,#8b5cf6)',
+              background: profilePic ? 'transparent' : 'linear-gradient(135deg,#ff6b9d,#8b5cf6)',
               borderRadius: 16,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              overflow: 'hidden',
             }}
           >
-            <svg
-              style={{ width: 28, height: 28, color: 'white' }}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
+            {profilePic ? (
+              <img src={profilePic} alt="photo" style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:16}} />
+            ) : (
+              <svg style={{width:28,height:28,color:'white'}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            )}
           </div>
           <div style={{ flex: 1 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>
