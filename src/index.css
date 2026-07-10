@@ -144,5 +144,6 @@ body{font-family:'Nunito',-apple-system,sans-serif;background:var(--bg-primary);
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes typing{0%,60%,100%{opacity:.3;transform:scale(.8)}30%{opacity:1;transform:scale(1)}}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes progressCircle{from{stroke-dashoffset:176}to{stroke-dashoffset:0}}
 
 @media(max-width:480px){.container{padding:16px;padding-bottom:110px}.form-wrapper{padding:24px 20px}.auth-logo-corner{top:20px;right:20px;padding:8px 16px}.auth-logo-text{font-size:18px}}
