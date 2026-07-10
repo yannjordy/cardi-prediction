@@ -91,11 +91,17 @@ export default function Home() {
   const measuringRef = useRef(false)
   const [result, setResult] = useState(null)
   const [lastBPM, setLastBPM] = useState(
-    () => localStorage.getItem('cardiLastBPM') || '--'
+    () => { try { return localStorage.getItem('cardiLastBPM') || '--' } catch { return '--' } }
   )
-  const session = JSON.parse(localStorage.getItem('cardi_session') || '{}')
-  const [userName, setUserName] = useState(session?.user?.fullName || 'Utilisateur')
-  const [profilePic, setProfilePic] = useState(() => localStorage.getItem('cardiProfilePic') || '')
+  const [userName, setUserName] = useState(() => {
+    try {
+      const s = JSON.parse(localStorage.getItem('cardi_session') || '{}')
+      return s?.user?.fullName || 'Utilisateur'
+    } catch { return 'Utilisateur' }
+  })
+  const [profilePic, setProfilePic] = useState(
+    () => { try { return localStorage.getItem('cardiProfilePic') || '' } catch { return '' } }
+  )
   const [bpmValues, setBpmValues] = useState([])
   const [waveformData, setWaveformData] = useState([])
   const [showHistory, setShowHistory] = useState(false)

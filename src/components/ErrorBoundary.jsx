@@ -69,12 +69,15 @@ export default class ErrorBoundary extends Component {
               fontSize: 14,
               fontWeight: 600,
               color: 'var(--text-secondary)',
-              marginBottom: 24,
+              marginBottom: 12,
               maxWidth: 400,
             }}
           >
             L'application a rencontre un probleme inattendu. Vous pouvez
             reessayer ou revenir a l'accueil.
+          </p>
+          <p style={{fontSize:11,fontWeight:600,color:'#ef4444',maxWidth:400,marginBottom:24,wordBreak:'break-word'}}>
+            {this.state.error?.message || this.state.error?.toString() || 'Erreur inconnue'}
           </p>
           <div style={{ display: 'flex', gap: 12 }}>
             <button

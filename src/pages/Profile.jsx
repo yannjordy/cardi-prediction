@@ -12,7 +12,7 @@ export default function Profile() {
   const [notifications, setNotifications] = useState(true)
   const [vibration, setVibration] = useState(true)
   const [measureCount, setMeasureCount] = useState(0)
-  const [profilePic, setProfilePic] = useState(() => localStorage.getItem('cardiProfilePic') || '')
+  const [profilePic, setProfilePic] = useState(() => { try { return localStorage.getItem('cardiProfilePic') || '' } catch { return '' } })
 
   useEffect(() => {
     try {

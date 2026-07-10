@@ -12,9 +12,11 @@ export default function Login() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    const rem = localStorage.getItem('rememberMe')
-    const em = localStorage.getItem('userEmail')
-    if (rem === 'true' && em) { setEmail(em); setRemember(true) }
+    try {
+      const rem = localStorage.getItem('rememberMe')
+      const em = localStorage.getItem('userEmail')
+      if (rem === 'true' && em) { setEmail(em); setRemember(true) }
+    } catch {}
   }, [])
 
   const handleSubmit = async (e) => {

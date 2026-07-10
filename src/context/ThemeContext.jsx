@@ -3,9 +3,11 @@ import { createContext, useContext, useState, useEffect, useMemo, useCallback } 
 const ThemeContext = createContext()
 
 function getInitialTheme() {
-  const saved = localStorage.getItem('cardiTheme')
-  if (saved) return saved
-  if (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches) return 'dark'
+  try {
+    const saved = localStorage.getItem('cardiTheme')
+    if (saved) return saved
+    if (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches) return 'dark'
+  } catch {}
   return 'light'
 }
 
