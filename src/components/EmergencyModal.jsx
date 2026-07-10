@@ -1,7 +1,7 @@
 import { useState } from 'react'
 export default function EmergencyModal({ onClose }) {
   const [numbers, setNumbers] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('cardiEmergencyNumbers') || '["15","17","18","112"]') } catch { return ['15','17','18','112'] }
+    try { return JSON.parse(localStorage.getItem('cardiEmergencyNumbers') || '["119"]') } catch { return ['119'] }
   })
   const save = n => { setNumbers(n); localStorage.setItem('cardiEmergencyNumbers', JSON.stringify(n)) }
   return (

@@ -2,6 +2,13 @@ import { Link, useLocation } from 'react-router-dom'
 import { useState, useRef, useCallback } from 'react'
 import EmergencyModal from './EmergencyModal'
 
+function getEmergencyNumber() {
+  try {
+    const nums = JSON.parse(localStorage.getItem('cardiEmergencyNumbers') || '["119"]')
+    return nums[0] || '119'
+  } catch { return '119' }
+}
+
 export default function BottomNav() {
   const { pathname } = useLocation()
   const [showEmergency, setShowEmergency] = useState(false)
@@ -18,7 +25,7 @@ export default function BottomNav() {
     longPressTimer.current = setTimeout(() => {
       setLongPressProgress(false)
       if (navigator.vibrate) navigator.vibrate([200, 100, 200])
-      window.location.href = 'tel:119'
+      window.location.href = 'tel:' + getEmergencyNumber()
     }, LONG_PRESS_DURATION)
   }, [])
 
