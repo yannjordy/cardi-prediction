@@ -5,7 +5,7 @@ const ThemeContext = createContext()
 function getInitialTheme() {
   const saved = localStorage.getItem('cardiTheme')
   if (saved) return saved
-  if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) return 'dark'
+  if (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches) return 'dark'
   return 'light'
 }
 

@@ -37,8 +37,10 @@ export default function Profile() {
 
   const save = () => {
     const updated = { ...userData, [editField]: editValue }
-    if (userData.height && userData.weight) {
-      updated.bmi = ((updated.weight || userData.weight) / ((updated.height || userData.height) / 100) ** 2).toFixed(1)
+    const h = parseFloat(updated.height)
+    const w = parseFloat(updated.weight)
+    if (h > 0 && w > 0) {
+      updated.bmi = (w / ((h / 100) ** 2)).toFixed(1)
     }
     localStorage.setItem('cardiUserHealthData', JSON.stringify(updated))
     setUserData(updated)

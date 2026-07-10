@@ -119,6 +119,7 @@ export default function Home() {
   const prevRedValuesRef = useRef([])
   const placementCheckRef = useRef(null)
   const lastFrameTimeRef = useRef(0)
+  const aiTimerRef = useRef(null)
 
   const { userData, addMeasurement, measurementHistory } = useUserData()
   const toast = useToast()
@@ -126,6 +127,10 @@ export default function Home() {
   useEffect(() => {
     if (userData.fullName) setUserName(userData.fullName)
   }, [userData.fullName])
+
+  useEffect(() => {
+    return () => clearTimeout(aiTimerRef.current)
+  }, [])
 
   const calcBPM = useCallback((values) => {
     if (values.length < CONFIG.SAMPLE_RATE * 2) return 0
@@ -358,7 +363,7 @@ export default function Home() {
     addMeasurement({ bpm, date: new Date().toISOString(), timestamp: Date.now() })
 
     setAiAnalyzing(true)
-    setTimeout(() => {
+    const t = setTimeout(() => {
       const hist = JSON.parse(localStorage.getItem('cardiHistory') || '[]')
       const insights = detectAnomalies(hist, userData)
       setAiInsights(insights)
@@ -366,6 +371,7 @@ export default function Home() {
       setAiRecs(recs)
       setAiAnalyzing(false)
     }, 1200)
+    aiTimerRef.current = t
   }
 
   const fs = FINGER_STATUS[fingerStatus]

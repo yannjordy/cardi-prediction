@@ -135,8 +135,8 @@ export default function Prediction() {
       `Grade: ${hs.grade}\n` +
       `IMC: ${hs.bmi} (${hs.bmi_category})\n` +
       `Derniere mesure: ${measurementHistory[0]?.bpm || '--'} BPM\n\n` +
-      `Risques:\n${analysis.diseases.map((d) => `- ${d.name}: ${d.probability}%`).join('\n')}\n\n` +
-      `Recommandations:\n${analysis.recommendations.slice(0, 4).map((r) => `- ${r.title}: ${r.description}`).join('\n')}\n\n` +
+      `Risques:\n${(analysis.diseases||[]).map((d) => `- ${d.name}: ${d.probability}%`).join('\n')}\n\n` +
+      `Recommandations:\n${(analysis.recommendations||[]).slice(0, 4).map((r) => `- ${r.title}: ${r.description}`).join('\n')}\n\n` +
       `Genere par Cardi AI - ${new Date().toLocaleDateString('fr-FR')}`
 
     if (navigator.share) {
