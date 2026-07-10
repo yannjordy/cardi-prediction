@@ -1,3 +1,5 @@
+import { fullAnalysis } from './healthAnalysis'
+
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 export async function analyzeHealth(userData, measurementHistory = []) {
@@ -21,15 +23,19 @@ export async function analyzeHealth(userData, measurementHistory = []) {
     bpm_history: bpmHistory,
   }
 
-  const response = await fetch(`${API_BASE}/analyze`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  })
+  try {
+    const response = await fetch(`${API_BASE}/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(5000),
+    })
 
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`)
+    if (!response.ok) throw new Error(`API error: ${response.status}`)
+
+    return await response.json()
+  } catch {
+    const result = fullAnalysis(userData, measurementHistory)
+    return { success: true, analysis: result, disclaimer: 'Analyse locale (backend non disponible)' }
   }
-
-  return response.json()
 }
