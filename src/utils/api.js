@@ -2,6 +2,17 @@ import { fullAnalysis } from './healthAnalysis'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
+async function fetchWithTimeout(url, options, timeout = 5000) {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeout)
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal })
+    return response
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
 export async function analyzeHealth(userData, measurementHistory = []) {
   const bpmHistory = measurementHistory.slice(0, 20).map((e) => e.bpm)
 
@@ -24,16 +35,16 @@ export async function analyzeHealth(userData, measurementHistory = []) {
   }
 
   try {
-    const response = await fetch(`${API_BASE}/analyze`, {
+    const response = await fetchWithTimeout(`${API_BASE}/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(5000),
     })
 
     if (!response.ok) throw new Error(`API error: ${response.status}`)
 
-    return await response.json()
+    const data = await response.json()
+    return data
   } catch {
     const result = fullAnalysis(userData, measurementHistory)
     return { success: true, analysis: result, disclaimer: 'Analyse locale (backend non disponible)' }
