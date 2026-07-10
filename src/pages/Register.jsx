@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../utils/supabase'
 
@@ -10,7 +10,12 @@ export default function Register() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const navTimer = useRef(null)
   const set = k => e => setForm(f => ({...f,[k]:e.target.value}))
+
+  useEffect(() => {
+    return () => clearTimeout(navTimer.current)
+  }, [])
 
   const strength = () => {
     const p = form.password
@@ -29,9 +34,9 @@ export default function Register() {
       const { error: err } = await supabase.auth.signUp({ email:form.email, password:form.password, options:{data:{full_name:form.fullName}} })
       if (err) throw err
       setSuccess('✓ Compte créé ! Vérifiez votre email.')
-      setTimeout(() => navigate('/info'), 2500)
+      navTimer.current = setTimeout(() => navigate('/info'), 2500)
     } catch (err) {
-      setError(err.message.includes('already') ? 'Email déjà utilisé' : 'Erreur lors de la création')
+      setError(err.message && (err.message.includes('already') || err.message.includes('Deja')) ? 'Email déjà utilisé' : 'Erreur lors de la création')
     } finally { setLoading(false) }
   }
 
